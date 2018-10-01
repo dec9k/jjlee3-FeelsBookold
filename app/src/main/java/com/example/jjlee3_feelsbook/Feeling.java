@@ -58,11 +58,16 @@ public abstract class Feeling implements Feelable {
         this.date = date;
     }
 
-    public String toString(){
+    public String DateasISO(){
         TimeZone tz = TimeZone.getTimeZone("UTC");
         DateFormat df = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss");
         df.setTimeZone(tz);
         String nowAsISO = df.format(date);
+        return nowAsISO;
+    }
+
+    public String toString(){
+        String nowAsISO = DateasISO();
         return this.feel + " | " + nowAsISO + " | " + this.message;
     }
 

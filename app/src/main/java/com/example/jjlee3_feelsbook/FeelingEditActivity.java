@@ -1,46 +1,32 @@
 package com.example.jjlee3_feelsbook;
 
 import android.app.Activity;
-import android.content.Context;
 import android.os.Bundle;
-import android.os.health.SystemHealthManager;
 import android.view.View;
-import android.widget.ArrayAdapter;
-import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.google.gson.Gson;
-import com.google.gson.reflect.TypeToken;
-
-import java.io.BufferedReader;
-import java.io.BufferedWriter;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.InputStreamReader;
-import java.io.OutputStreamWriter;
-import java.lang.reflect.Type;
-import java.time.YearMonth;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.Collections;
-import java.util.Comparator;
 import java.util.Date;
 import java.util.GregorianCalendar;
 
 public class FeelingEditActivity extends Activity {
 
     private Integer index;
-    private static final String FILENAME = "file.sav";
 
     MyApp app;
 
     ArrayList<Feeling> feelList;
     private Feeling newFeel;
     private EditText currentComment;
+    private EditText currentDay;
+    private EditText currentHour;
+    private EditText currentMin;
+
+    private Calendar calendar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -58,6 +44,25 @@ public class FeelingEditActivity extends Activity {
         currentFeeling.setText("Current Feeling: " + newFeel.getFeel());
         currentComment = (EditText) findViewById(R.id.newCommentText);
         currentComment.setText(newFeel.getMessage());
+
+        currentDay = (EditText) findViewById(R.id.dayText);
+        currentHour = (EditText) findViewById(R.id.hourText);
+        currentMin = (EditText) findViewById(R.id.minText);
+
+        setDateTexts();
+    }
+
+    public void setDateTexts(){
+        calendar = GregorianCalendar.getInstance();
+        calendar.setTime(newFeel.getDate());
+
+        Integer dofm = calendar.get(Calendar.DAY_OF_MONTH);
+        Integer hod = calendar.get(Calendar.HOUR_OF_DAY);
+        Integer moh = calendar.get(Calendar.MINUTE);
+
+        currentDay.setText(dofm.toString());
+        currentHour.setText(hod.toString());
+        currentMin.setText(moh.toString());
     }
 
     public void setIndex(Integer index){
@@ -76,29 +81,19 @@ public class FeelingEditActivity extends Activity {
         finish();
     }
 
-    public void setnewDate(Feeling myfeel){
-        /*
-        currentYear = (EditText) findViewById(R.id.newYearText);
-        currentMonth = (EditText) findViewById(R.id.newMonthText);
-        currentDay = (EditText) findViewById(R.id.newDayText);
-        ////
-        currentHour = (EditText) findViewById(R.id.newHourText);
-        currentMin = (EditText) findViewById(R.id.newMinText);
-        currentSec = (EditText) findViewById(R.id.newSecText);
+    public void setnewDate(){
 
-        Integer YEAR = currentYear.getText();
-        Integer MONTH = currentMonth.getText();
-        Integer DAY = currentDay.getText();
+        Integer YEAR = calendar.get(Calendar.YEAR);
+        Integer MONTH = calendar.get(Calendar.MONTH);
+        Integer DAY = Integer.parseInt(currentDay.getText().toString());
 
-        Integer HOUR = currentHour.getText();
-        Integer MIN = currentMin.getText();
-        Integer SEC = currentSec.getText();
+        Integer HOUR = Integer.parseInt(currentHour.getText().toString());
+        Integer MIN = Integer.parseInt(currentMin.getText().toString());
 
-
-        Calendar mycal = new GregorianCalendar(YEAR, MONTH,1);
+        Calendar mycal = new GregorianCalendar(YEAR, MONTH,DAY);
         Integer maximumday = mycal.getActualMaximum(Calendar.DAY_OF_MONTH);
 
-        if (maximumday <= DAY){
+        if (maximumday >= DAY){
             //Inside the zone
         }else{
             //Invalid timezone
@@ -108,31 +103,40 @@ public class FeelingEditActivity extends Activity {
         if (HOUR >= 24){
             //Make sure it doesn't pass 24 hours
             HOUR = 24;
+        }else if (HOUR <= 0){
+            HOUR = 0;
+            //Make sure it doesn't go to negative integers
         }
 
+        if ((MIN >= 60) || (MIN <= 0)){
+            MIN = 0;
+        }
+
+        Calendar myCal = Calendar.getInstance();
+
+
         Date oldDate = newFeel.getDate();
+        oldDate = myCal.getTime();
+
         Calendar cal = Calendar.getInstance();
         cal.setTime(oldDate);
 
-        cal.set(Calendar.YEAR, YEAR);
-        cal.set(Calendar.MONTH, MONTH-1);
         cal.set(Calendar.DAY_OF_MONTH, DAY);
-        //
         cal.set(Calendar.HOUR_OF_DAY, HOUR);
         cal.set(Calendar.MINUTE, MIN);
-        cal.set(Calendar.SECOND, SEC);
+
+        String string = "";
+
 
         oldDate = cal.getTime();
-        myfeel.setDate(oldDate);
-        */
-
+        newFeel.setDate(oldDate);
     }
 
     public void applied(View v){
         Toast.makeText(this, "Applied changes",Toast.LENGTH_SHORT).show();
         //Apply the changes to the thing
         newFeel.setMessage(currentComment.getText().toString());
-        setnewDate(newFeel);
+        setnewDate();
         app.setFeel(feelList);
         app.saveFile();
         finish();
