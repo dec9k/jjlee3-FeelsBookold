@@ -23,7 +23,6 @@ public class MyApp extends Application {
 
     private static final String FILENAME = "file.sav";
     private static ArrayList<Feeling> feelList;
-    private static MyApp CurrentInstance;
     private static Context appContext;
 
     @Override
@@ -37,10 +36,6 @@ public class MyApp extends Application {
 
     public void setFeel(ArrayList<Feeling> newList){
         this.feelList = newList;
-    }
-
-    public static MyApp instance() {
-        return CurrentInstance;
     }
 
     public static Context getAppContext() {
