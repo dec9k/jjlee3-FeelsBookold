@@ -20,9 +20,9 @@ public class FeelingEditActivity extends Activity {
 
     private Integer index;
 
-    MyApp app;
+    private MyApp app;
 
-    ArrayList<Feeling> feelList;
+    private ArrayList<Feeling> feelList;
     private Feeling newFeel;
     private EditText currentComment;
     private EditText currentDay;
