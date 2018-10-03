@@ -14,7 +14,6 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
-import java.util.Locale;
 import java.util.TimeZone;
 
 public class FeelingEditActivity extends Activity {
@@ -41,7 +40,6 @@ public class FeelingEditActivity extends Activity {
         Integer sessionIndex = getIntent().getIntExtra("THE_INDEX",0);
         setIndex(sessionIndex);
         newFeel = feelList.get(sessionIndex);
-        //System.out.println("The INDEX IS : "+ sessionIndex.toString());
 
         TextView currentFeeling = (TextView) findViewById(R.id.currentFeelingView);
         currentFeeling.setText("Current Feeling: " + newFeel.getFeel());
@@ -62,10 +60,6 @@ public class FeelingEditActivity extends Activity {
     public void setDateTexts(){
 
         dateasISO = newFeel.DateasISO();
-        //String[] parts = dateasISO.split("-");
-
-        //calendar = GregorianCalendar.getInstance();
-        //calendar.setTime(newFeel.getDate());
 
         Integer dofm = ISOsubStrings(8,10);
         Integer hod = ISOsubStrings(11,13);
@@ -83,7 +77,6 @@ public class FeelingEditActivity extends Activity {
     public Integer getIndex(){
         return this.index;
     }
-
 
     public void deleteButton(View v){
         Toast.makeText(this, "Removed",Toast.LENGTH_SHORT).show();
@@ -136,16 +129,13 @@ public class FeelingEditActivity extends Activity {
         df.setTimeZone(tz);
         String tradeDate;
         tradeDate = changeString(YEAR) + "-" + changeString(MONTH) + "-" + changeString(DAY) + " " + changeString(HOUR) + ":" + changeString(MIN) + ":" + changeString(SEC);
-        System.out.println(tradeDate);
         try {
-            System.out.println(df.parse(tradeDate));
             cal.setTime(df.parse(tradeDate));
             passed = true;
             oldDate = cal.getTime();
             newFeel.setDate(oldDate);
         } catch(ParseException e) {
             passed = false;
-            System.out.println("Something went wrong");
         }
 
         return passed;

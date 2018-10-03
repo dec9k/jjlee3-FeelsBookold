@@ -2,28 +2,15 @@ package com.example.jjlee3_feelsbook;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.Date;
 import java.util.TimeZone;
 
-public abstract class Feeling implements Feelable {
+public class Feeling{
 
     private Date date;
     private String message;
     private String feel;
-
     private static final Integer MAX_CHARS = 100;
-
-    Feeling() {
-        this.date = new Date();
-        setMessage("");
-    }
-
-    Feeling(String message){
-        this.date = new Date();
-        setMessage(message);
-    }
 
     Feeling(String message, String feel){
         this.feel = feel;
@@ -70,6 +57,4 @@ public abstract class Feeling implements Feelable {
         String nowAsISO = DateasISO();
         return this.feel + " | " + nowAsISO + " | " + this.message;
     }
-
-    public abstract Boolean isImportant();
 }

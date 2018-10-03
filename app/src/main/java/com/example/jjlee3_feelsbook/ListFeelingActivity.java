@@ -18,8 +18,12 @@ public class ListFeelingActivity extends Activity {
     ArrayAdapter<Feeling> adapter;
 
     MyApp app;
-    private ArrayList<String> feelings;
-    private ArrayList<Integer> feelingCount;
+    private static final String[] ALL_EMOTIONS = {
+            "Joy", "Sad", "Love", "Surprise", "Anger","Fear"
+    };
+    private static Integer[] Emote_Counts = {
+            0, 0, 0, 0, 0, 0
+    };
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -38,27 +42,12 @@ public class ListFeelingActivity extends Activity {
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 Intent intent = new Intent(ListFeelingActivity.this, FeelingEditActivity.class);
                 intent.putExtra("THE_INDEX", position);
-                //System.out.println("THE INDEX : " + position);
                 startActivity(intent);
             }
         });
     }
 
     public void setupCounts(){
-        feelings = new ArrayList<String>();
-        feelings.add("Joy");
-        feelings.add("Sad");
-        feelings.add("Love");
-        feelings.add("Surprise");
-        feelings.add("Anger");
-        feelings.add("Fear");
-        feelingCount = new ArrayList<Integer>();
-        feelingCount.add(0);
-        feelingCount.add(0);
-        feelingCount.add(0);
-        feelingCount.add(0);
-        feelingCount.add(0);
-        feelingCount.add(0);
     }
 
     public void CountFeelings(){
@@ -66,27 +55,25 @@ public class ListFeelingActivity extends Activity {
         adapter = new ArrayAdapter<Feeling>(this,
                 R.layout.list_item, feelList);
         oldFeelsList.setAdapter(adapter);
-        String str = "| ";
-        for (int i = 0; i < feelings.size(); i++) {
-            Integer num = countFeeling(feelings.get(i));
-            feelingCount.set(i, num);
-            str = str + feelings.get(i) + " : " + num.toString() + " | ";
-            //System.out.println(feelings.get(i) + " : " + num.toString());
+        String eCounts = "| ";
+        for (int i = 0; i < 6; i++) {
+            Integer num = countFeeling(ALL_EMOTIONS[i]);
+            Emote_Counts[i] = num;
+            eCounts = eCounts + ALL_EMOTIONS[i] + " : " + num.toString() + " | ";
         }
-        feelCounts.setText(str);
+        feelCounts.setText(eCounts);
         adapter.notifyDataSetChanged();
     }
 
     public Integer countFeeling(String keyword){
-        Integer num = 0;
-        for (Feeling f : feelList){
-            String feel = f.getFeel();
-            //System.out.println(feel);
+        Integer count = 0;
+        for (Feeling feeling : feelList){
+            String feel = feeling.getFeel();
             if (feel.equals(keyword)){
-                num ++;
+                count ++;
             }
         }
-        return num;
+        return count;
     }
 
     public void returnBack(View v){

@@ -26,10 +26,7 @@ import android.widget.Toast;
 import java.util.ArrayList;
 
 public class MainActivity extends AppCompatActivity {
-
-    private static final String DEFAULTFEELING = "None";
     private EditText bodyText;
-    private String CurrentFeeling = DEFAULTFEELING;
 
     MyApp app;
     ArrayList<Feeling> feelList;
@@ -38,9 +35,7 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
         bodyText = (EditText) findViewById(R.id.commentText);
-
         app = (MyApp) getApplicationContext();
     }
 
@@ -60,13 +55,11 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void setFeeling(String myfeeling){
-        this.CurrentFeeling = myfeeling;
         feelList = app.getFeel();
         Toast.makeText(MainActivity.this, myfeeling + " Added", Toast.LENGTH_SHORT).show();
-        setResult(RESULT_OK);
+        //setResult(RESULT_OK);
         String text = bodyText.getText().toString();
-
-        Feeling feel = new ExtendFeel(text, CurrentFeeling);
+        Feeling feel = new Feeling(text, myfeeling);
 
         feelList.add(feel);
         app.setFeel(feelList);
