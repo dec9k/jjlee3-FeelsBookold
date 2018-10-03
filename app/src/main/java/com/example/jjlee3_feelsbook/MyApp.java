@@ -24,7 +24,7 @@ public class MyApp extends Application {
     private static ArrayList<Feeling> feelList;
 
     @Override
-    public void onCreate() {
+    public void onCreate(Bundle savedInstanceState) {
         super.onCreate();
         loadFile();
     }
