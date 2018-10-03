@@ -28,8 +28,8 @@ import java.util.ArrayList;
 public class MainActivity extends AppCompatActivity {
     private EditText bodyText;
 
-    MyApp app;
-    ArrayList<Feeling> feelList;
+    private MyApp app;
+    private ArrayList<Feeling> feelList;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
