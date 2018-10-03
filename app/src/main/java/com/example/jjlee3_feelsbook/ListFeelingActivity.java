@@ -14,10 +14,10 @@ public class ListFeelingActivity extends Activity {
 
     private ListView oldFeelsList;
     private TextView feelCounts;
-    ArrayList<Feeling> feelList;
-    ArrayAdapter<Feeling> adapter;
+    private ArrayList<Feeling> feelList;
+    private ArrayAdapter<Feeling> adapter;
 
-    MyApp app;
+    private MyApp app;
     private static final String[] ALL_EMOTIONS = {
             "Joy", "Sad", "Love", "Surprise", "Anger","Fear"
     };
@@ -33,8 +33,6 @@ public class ListFeelingActivity extends Activity {
         feelCounts = (TextView) findViewById(R.id.feelCountsView);
         oldFeelsList = (ListView) findViewById(R.id.FeelsList);
 
-        setupCounts();
-
         app = (MyApp) getApplicationContext();
 
         oldFeelsList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
@@ -47,10 +45,7 @@ public class ListFeelingActivity extends Activity {
         });
     }
 
-    public void setupCounts(){
-    }
-
-    public void CountFeelings(){
+    public void SetUpFeelings(){
         feelList = app.getFeel();
         adapter = new ArrayAdapter<Feeling>(this,
                 R.layout.list_item, feelList);
@@ -84,7 +79,7 @@ public class ListFeelingActivity extends Activity {
     protected void onResume() {
         // TODO Auto-generated method stub
         super.onResume();
-        CountFeelings();
+        SetUpFeelings();
     }
 
 }
