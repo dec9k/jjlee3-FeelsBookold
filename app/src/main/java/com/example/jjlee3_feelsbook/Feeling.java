@@ -37,8 +37,8 @@ public class Feeling{
         }
     }
 
-    public int compareTo(Feeling o){
-        return getDate().compareTo(o.getDate());
+    public int compareTo(Feeling feeling){
+        return getDate().compareTo(feeling.getDate());
     }
 
     public void setDate(Date date){
