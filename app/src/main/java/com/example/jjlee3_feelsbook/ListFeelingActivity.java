@@ -10,14 +10,19 @@ import android.widget.ListView;
 import android.widget.TextView;
 import java.util.ArrayList;
 
+
+/**
+ * ListFeelingActivity class, provides the UI of the application
+ * Provides all the lists of the Feeling Arrays as well as the count for each one
+ */
 public class ListFeelingActivity extends Activity {
 
     private ListView oldFeelsList;
     private TextView feelCounts;
-    ArrayList<Feeling> feelList;
-    ArrayAdapter<Feeling> adapter;
+    private ArrayList<Feeling> feelList;
+    private ArrayAdapter<Feeling> adapter;
 
-    MyApp app;
+    private MyApp app;
     private static final String[] ALL_EMOTIONS = {
             "Joy", "Sad", "Love", "Surprise", "Anger","Fear"
     };
@@ -25,6 +30,12 @@ public class ListFeelingActivity extends Activity {
             0, 0, 0, 0, 0, 0
     };
 
+
+    /**
+     * onCreate method sets the variables as well as setting up the onclickListener for the ListView
+     * It also sets up the counts and puts on the display
+     * @param savedInstanceState Bundle type
+     */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -32,8 +43,6 @@ public class ListFeelingActivity extends Activity {
 
         feelCounts = (TextView) findViewById(R.id.feelCountsView);
         oldFeelsList = (ListView) findViewById(R.id.FeelsList);
-
-        setupCounts();
 
         app = (MyApp) getApplicationContext();
 
@@ -47,10 +56,10 @@ public class ListFeelingActivity extends Activity {
         });
     }
 
-    public void setupCounts(){
-    }
-
-    public void CountFeelings(){
+    /**
+     * DisplayCounts displays the count for each emotions given
+     */
+    public void DisplayCounts(){
         feelList = app.getFeel();
         adapter = new ArrayAdapter<Feeling>(this,
                 R.layout.list_item, feelList);
@@ -65,6 +74,11 @@ public class ListFeelingActivity extends Activity {
         adapter.notifyDataSetChanged();
     }
 
+    /**
+     * countFeeling counts the number of a specific emotion
+     * @param keyword type String
+     * @return count type Integer
+     */
     public Integer countFeeling(String keyword){
         Integer count = 0;
         for (Feeling feeling : feelList){
@@ -76,15 +90,21 @@ public class ListFeelingActivity extends Activity {
         return count;
     }
 
+    /**
+     * returnBack returns the user back to the previous activity
+     * @param v
+     */
     public void returnBack(View v){
         finish();
     }
 
+    /**
+     * onResume display the counts every time the user returns to this activity
+     */
     @Override
     protected void onResume() {
         // TODO Auto-generated method stub
         super.onResume();
-        CountFeelings();
+        DisplayCounts();
     }
-
 }

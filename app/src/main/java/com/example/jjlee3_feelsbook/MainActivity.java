@@ -25,12 +25,21 @@ import android.widget.EditText;
 import android.widget.Toast;
 import java.util.ArrayList;
 
+/**
+ * MainActivity class, provides the UI of the application
+ * It also allow users to store their emotions
+ */
 public class MainActivity extends AppCompatActivity {
     private EditText bodyText;
 
-    MyApp app;
-    ArrayList<Feeling> feelList;
+    private MyApp app;
+    private ArrayList<Feeling> feelList;
 
+    /**
+     * onCreate method starts when the Activity is first created
+     * Sets up the variables
+     * @param savedInstanceState Bundle type
+     */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -39,21 +48,30 @@ public class MainActivity extends AppCompatActivity {
         app = (MyApp) getApplicationContext();
     }
 
-    public void startIntent(){
+    /**
+     * recordFeel starts a new activity and moves the user to that activity
+     * Invokes when the Record button is pressed
+     * @param v View type
+     */
+    public void recordFeel(View v){
         Intent intent = new Intent(MainActivity.this, ListFeelingActivity.class);
         startActivity(intent);
     }
 
-    public void recordFeel(View v){
-        startIntent();
-    }
-
+    /**
+     * moodButton stores the specific emotion depending on the button pressed
+     * @param v View type
+     */
     public void moodButton(View v){
         Button b = (Button)v;
         String str = b.getText().toString();
         setFeeling(str);
     }
 
+    /**
+     * setFeeling stores a new Feeling class in the array list and saves the feeling
+     * @param myfeeling String type
+     */
     public void setFeeling(String myfeeling){
         feelList = app.getFeel();
         Toast.makeText(MainActivity.this, myfeeling + " Added", Toast.LENGTH_SHORT).show();

@@ -19,20 +19,35 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 
+/**
+ * MyApp class, provides the Save, Load, and where the Data properties are stored on
+ */
 public class MyApp extends Application {
     private static final String FILENAME = "file.sav";
     private static ArrayList<Feeling> feelList;
 
+    /**
+     * onCreate method starts when the Application is first created
+     * Loads in the file stored in the android
+     */
     @Override
     public void onCreate() {
         super.onCreate();
         loadFile();
     }
 
+    /**
+     * setFeel sets the data ArrayList to a newly given ArrayList
+     * @param newList ArrayList<Feeling> type
+     */
     public void setFeel(ArrayList<Feeling> newList){
         this.feelList = newList;
     }
 
+    /**
+     * getFeel get method for data ArrayList
+     * @return feelList ArrayList<Feeling> type
+     */
     public ArrayList<Feeling> getFeel(){
         Collections.sort(feelList, new Comparator<Feeling>(){
             public int compare(Feeling o1, Feeling o2){
@@ -42,8 +57,11 @@ public class MyApp extends Application {
         return this.feelList;
     }
 
+    /**
+     * loadFile method used to load the stored data in the android
+     * If nothing is found then creates an empty ArrayList
+     */
     public void loadFile() {
-
         try {
             FileInputStream fis = openFileInput(FILENAME);
             BufferedReader in = new BufferedReader(new InputStreamReader(fis));
@@ -64,6 +82,9 @@ public class MyApp extends Application {
         }
     }
 
+    /**
+     * saveFile method used to store the current data to the stored data in the android
+     */
     public void saveFile(){
         try {
 

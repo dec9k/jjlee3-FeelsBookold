@@ -16,13 +16,16 @@ import java.util.Date;
 import java.util.GregorianCalendar;
 import java.util.TimeZone;
 
+
+/**
+ * FeelingEditActivity class, provides the UI of the application
+ * It also applies changes to the given Feeling class Date & Comments
+ */
 public class FeelingEditActivity extends Activity {
 
-    private Integer index;
+    private MyApp app;
 
-    MyApp app;
-
-    ArrayList<Feeling> feelList;
+    private ArrayList<Feeling> feelList;
     private Feeling newFeel;
     private EditText currentComment;
     private EditText currentDay;
@@ -30,6 +33,11 @@ public class FeelingEditActivity extends Activity {
     private EditText currentMin;
     private String dateasISO;
 
+    /**
+     * onCreate method starts when the Activity is first created
+     * Gets the index of the selected Feeling and sets the variables needed in the future
+     * @param savedInstanceState Bundle type
+     */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -38,7 +46,6 @@ public class FeelingEditActivity extends Activity {
         app = (MyApp) getApplicationContext();
         feelList = app.getFeel();
         Integer sessionIndex = getIntent().getIntExtra("THE_INDEX",0);
-        setIndex(sessionIndex);
         newFeel = feelList.get(sessionIndex);
 
         TextView currentFeeling = (TextView) findViewById(R.id.currentFeelingView);
@@ -50,14 +57,23 @@ public class FeelingEditActivity extends Activity {
         currentHour = (EditText) findViewById(R.id.hourText);
         currentMin = (EditText) findViewById(R.id.minText);
 
-        setDateTexts();
+        setDisplayTexts();
     }
 
+    /**
+     * ISOsubStrings returns the substring of the date in ISO format then formatted into an Integer
+     * @param begin
+     * @param end
+     * @return
+     */
     public Integer ISOsubStrings(Integer begin, Integer end){
         return Integer.parseInt(dateasISO.substring(begin,end));
     }
 
-    public void setDateTexts(){
+    /**
+     * setDisplayTexts sets the Display UI with the correct information of the Feeling class
+     */
+    public void setDisplayTexts(){
 
         dateasISO = newFeel.DateasISO();
 
@@ -65,19 +81,19 @@ public class FeelingEditActivity extends Activity {
         Integer hod = ISOsubStrings(11,13);
         Integer moh = ISOsubStrings(14,16);
 
+        TextView isoDisplay = (TextView) findViewById(R.id.isoTime);
+        isoDisplay.setText(dateasISO);
+
         currentDay.setText(dofm.toString());
         currentHour.setText(hod.toString());
         currentMin.setText(moh.toString());
     }
 
-    public void setIndex(Integer index){
-        this.index = index;
-    }
-
-    public Integer getIndex(){
-        return this.index;
-    }
-
+    /**
+     * deleteButton Deletes the given Feeling class from the ArrayList and saves the File
+     * It invokes when 'Delete' button is pressed and then returns back to previous Activity
+     * @param v View type (Delete button)
+     */
     public void deleteButton(View v){
         Toast.makeText(this, "Removed",Toast.LENGTH_SHORT).show();
         feelList.remove(newFeel);
@@ -86,14 +102,17 @@ public class FeelingEditActivity extends Activity {
         finish();
     }
 
+    /**
+     * setnewDate updates the date to the new given time by ISO standard
+     * Does some computation with the Calendar's date and ISO's date
+     * @return Boolean that checks if it the update was successful or not
+     */
     public Boolean setnewDate(){
         Boolean passed;
 
         Calendar myCal = Calendar.getInstance();
         Date oldDate = newFeel.getDate();
         myCal.setTime(oldDate);
-
-        String dateasISO = newFeel.DateasISO();
 
         Integer YEAR = ISOsubStrings(0,4);
         Integer MONTH = ISOsubStrings(5,7);
@@ -107,9 +126,9 @@ public class FeelingEditActivity extends Activity {
         Integer maximumday = mycal.getActualMaximum(Calendar.DAY_OF_MONTH);
 
         if (maximumday >= DAY){
-            //Inside the zone
+            //Inside the day of the month
         }else{
-            //Invalid timezone
+            //Invalid day
             DAY = maximumday;
         }
 
@@ -123,16 +142,15 @@ public class FeelingEditActivity extends Activity {
             MIN = 0;
         }
 
-        TimeZone tz = TimeZone.getTimeZone("UTC");
-        Calendar cal = Calendar.getInstance();
-        DateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");//
-        df.setTimeZone(tz);
+        TimeZone timezone = TimeZone.getTimeZone("UTC");
+        DateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");//
+        format.setTimeZone(timezone);
         String tradeDate;
         tradeDate = changeString(YEAR) + "-" + changeString(MONTH) + "-" + changeString(DAY) + " " + changeString(HOUR) + ":" + changeString(MIN) + ":" + changeString(SEC);
         try {
-            cal.setTime(df.parse(tradeDate));
+            mycal.setTime(format.parse(tradeDate));
             passed = true;
-            oldDate = cal.getTime();
+            oldDate = mycal.getTime();
             newFeel.setDate(oldDate);
         } catch(ParseException e) {
             passed = false;
@@ -141,16 +159,26 @@ public class FeelingEditActivity extends Activity {
         return passed;
     }
 
+    /**
+     * changeString changes an integer to a string and adds a 0 in front depending on the length of the string
+     * Used for when calculating the format of the date
+     * @param atime Integer type
+     * @return astring String type
+     */
     public String changeString(Integer atime){
-        String at = atime.toString();
-        if (at.length() == 1){
-            at = "0"+at;
+        String astring = atime.toString();
+        if (astring.length() == 1){
+            astring = "0"+astring;
         }
-        return at;
+        return astring;
     }
 
+    /**
+     * applied Apply the changes to the given Feeling class
+     * It invokes when 'Apply' button is pressed and then returns to the previous Activity
+     * @param v View type (Apply Button)
+     */
     public void applied(View v){
-
         //Apply the changes to the thing
         Boolean fixed = setnewDate();
         if (fixed == true){
@@ -164,6 +192,11 @@ public class FeelingEditActivity extends Activity {
         finish();
     }
 
+    /**
+     * cancelled Cancels Editing process of the Feeling class
+     * It invokes when 'Cancel' button is pressed and returns to the previous Activity
+     * @param v View type (Cancel Button)
+     */
     public void cancelled(View v){
         Toast.makeText(this, "Cancelled",Toast.LENGTH_SHORT).show();
         finish();
