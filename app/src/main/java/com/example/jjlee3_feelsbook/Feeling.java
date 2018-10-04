@@ -61,6 +61,12 @@ public class Feeling{
         }
     }
 
+<<<<<<< HEAD
+=======
+    public int compareTo(Feeling feeling){
+        return getDate().compareTo(feeling.getDate());
+    }
+>>>>>>> a4792192469c53a1ba3c04f3bc11584e50ebcf0a
 
     /**
      * setDate set method for the Date

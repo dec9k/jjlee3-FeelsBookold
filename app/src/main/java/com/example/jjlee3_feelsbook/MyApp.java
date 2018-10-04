@@ -31,7 +31,7 @@ public class MyApp extends Application {
      * Loads in the file stored in the android
      */
     @Override
-    public void onCreate() {
+    public void onCreate(Bundle savedInstanceState) {
         super.onCreate();
         loadFile();
     }

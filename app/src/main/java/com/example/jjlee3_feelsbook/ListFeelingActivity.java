@@ -56,10 +56,14 @@ public class ListFeelingActivity extends Activity {
         });
     }
 
+<<<<<<< HEAD
     /**
      * DisplayCounts displays the count for each emotions given
      */
     public void DisplayCounts(){
+=======
+    public void SetUpFeelings(){
+>>>>>>> a4792192469c53a1ba3c04f3bc11584e50ebcf0a
         feelList = app.getFeel();
         adapter = new ArrayAdapter<Feeling>(this,
                 R.layout.list_item, feelList);
@@ -105,6 +109,10 @@ public class ListFeelingActivity extends Activity {
     protected void onResume() {
         // TODO Auto-generated method stub
         super.onResume();
+<<<<<<< HEAD
         DisplayCounts();
+=======
+        SetUpFeelings();
+>>>>>>> a4792192469c53a1ba3c04f3bc11584e50ebcf0a
     }
 }
